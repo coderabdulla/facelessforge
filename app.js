@@ -30,7 +30,7 @@ document.querySelectorAll("#main-nav .nav-btn").forEach((btn) => {
 btn.addEventListener("click", () => {
 const page = btn.getAttribute("data-page");
 document.querySelectorAll(".page-view").forEach((view) => {
-view.classList.toggle("hidden", view.id !== page-${page});
+view.classList.toggle("hidden", view.id !== `page-${page}`);
 });
 });
 });
@@ -52,7 +52,15 @@ const playBtn = document.getElementById("btn-play-preview");
 const exportBtn = document.getElementById("btn-export-video");
 
 if (generateBtn) generateBtn.addEventListener("click", () => this.executePipeline());  
-if (playBtn) playBtn.addEventListener("click", () => this.compositor.playPreview(this.currentProject.scenes));  
+if (playBtn) {
+  playBtn.addEventListener("click", () => {
+    if (!this.currentProject) {
+      return;
+    }
+
+    this.compositor.playPreview(this.currentProject.scenes);
+  });
+}
 if (exportBtn) exportBtn.addEventListener("click", () => this.exportVideo());
 
 }
@@ -89,7 +97,10 @@ document.getElementById("btn-export-video").disabled = false;
 async exportVideo() {
 if (!this.currentProject) return;
 const blob = await this.compositor.exportVideo(this.currentProject.scenes);
-Utils.downloadFile(blob, FacelessForge_${Date.now()}.webm);
+Utils.downloadFile(
+  blob,
+  `FacelessForge_${Date.now()}.webm`
+);
 }
 
 renderBlankCanvasState() {
