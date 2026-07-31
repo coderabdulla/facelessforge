@@ -2,6 +2,9 @@
 export class ImageEngine {
 
     async generateImage(prompt) {
+        if (this.cache.has(prompt)) {
+    return this.cache.get(prompt);
+        }
         constructor() {
     this.cache = new Map();
         }
@@ -14,6 +17,7 @@ export class ImageEngine {
             body: JSON.stringify({
                 prompt
             })
+            this.cache.set(prompt, data.imageUrl);
         });
 
         if (!response.ok) {
@@ -28,32 +32,15 @@ export class ImageEngine {
 
     async preloadSceneImages(scenes) {
 
-        const result = [];
+        const img = new Image();
 
-        for (const scene of scenes) {
+img.loading = "eager";
 
-            const imageUrl =
-                await this.generateImage(
-                    scene.imagePrompt
-                );
+img.decoding = "async";
 
-            const img = new Image();
+img.src = imageUrl;
 
-            img.src = imageUrl;
-
-            await new Promise(resolve => {
-
-                img.onload = resolve;
-
-            });
-
-            result.push({
-
-                ...scene,
-
-                imageElement: img
-
-            });
+await img.decode();
 
         }
 
