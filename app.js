@@ -774,6 +774,25 @@ await this.voiceEngine.speak(scene.text);
 
 });
 
+document
+.getElementById("btn-play-preview")
+?.addEventListener("click", () => {
+
+    if (!this.currentProject) return;
+
+    this.compositor.playPreview(
+        this.currentProject.scenes
+    );
+
+});
+
+document
+.getElementById("btn-stop-preview")
+?.addEventListener("click", () => {
+
+    this.compositor.stopPreview();
+
+});
 /* ========================= */
 /* End Class */
 /* ========================= */
