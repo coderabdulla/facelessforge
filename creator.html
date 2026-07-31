@@ -21,15 +21,13 @@ connect-src 'self' https://generativelanguage.googleapis.com;
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-
+<script src="https://unpkg.com/@ffmpeg/ffmpeg@0.12.10/dist/umd/ffmpeg.js"></script>
     <link rel="stylesheet" href="style.css">
 
 </head>
 
 <body>
-    <button id="btn-generate-pipeline" class="btn-primary">
-    Generate AI Video
-    </button>
+    
     <button class="nav-btn active" data-page="creator">Creator</button>
 
 <button class="nav-btn" data-page="projects">Projects</button>
@@ -39,25 +37,7 @@ connect-src 'self' https://generativelanguage.googleapis.com;
 <button class="nav-btn" data-page="settings">Settings</button>
 
 <button class="nav-btn" data-page="about">About</button>
-    <div id="page-creator" class="page-view">
-...
-</div>
 
-<div id="page-projects" class="page-view hidden">
-...
-</div>
-
-<div id="page-downloads" class="page-view hidden">
-...
-</div>
-
-<div id="page-settings" class="page-view hidden">
-...
-</div>
-
-<div id="page-about" class="page-view hidden">
-...
-</div>
 <button id="mobile-menu-btn">
 ☰
 </button>
@@ -68,9 +48,6 @@ connect-src 'self' https://generativelanguage.googleapis.com;
     </aside>
 <div id="creator-app">
 
-    <!-- Sidebar -->
-
-    <aside class="sidebar">
 
         <div class="logo">
 
@@ -594,7 +571,6 @@ connect-src 'self' https://generativelanguage.googleapis.com;
         <option value="60">60 FPS</option>
     </select>
 
-    <label>Voice Speed</label>
 
     <input
         id="voice-speed"
@@ -785,8 +761,6 @@ Generate your first AI video.
 
 <!-- Toast -->
 
-<div id="toast-container"></div>
-
 <!-- Loading -->
 
 <div id="global-loader" class="hidden">
@@ -795,9 +769,8 @@ Generate your first AI video.
 
 </div>
 
-<script type="module" src="app.js"></script>
+<script type="module" src="./js/app.js"></script>
     <!-- Loading Overlay -->
-<div id="loading-overlay" class="loading-overlay hidden">
     <div class="loader"></div>
     <h3 id="loading-title">Processing...</h3>
     <p id="loading-text">Please wait...</p>
