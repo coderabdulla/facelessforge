@@ -115,3 +115,20 @@ high detail
     }
 
 }
+const response = await fetch("/api/generate-script", {
+
+    method: "POST",
+
+    headers: {
+        "Content-Type": "application/json"
+    },
+
+    body: JSON.stringify({
+
+        prompt: customPrompt
+
+    })
+
+});
+
+const result = await response.json();
