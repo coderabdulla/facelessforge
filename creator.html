@@ -17,6 +17,9 @@
 </head>
 
 <body>
+    <button id="btn-generate-pipeline" class="btn-primary">
+    Generate AI Video
+    </button>
     <button class="nav-btn active" data-page="creator">Creator</button>
 
 <button class="nav-btn" data-page="projects">Projects</button>
@@ -306,6 +309,25 @@
                 class="hidden">
 
                 <div class="loader"></div>
+                <div id="pipeline-progress" class="hidden">
+
+    <div class="pipeline-step active">
+        📝 Script
+    </div>
+
+    <div class="pipeline-step">
+        🎨 Images
+    </div>
+
+    <div class="pipeline-step">
+        🎤 Voice
+    </div>
+
+    <div class="pipeline-step">
+        🎬 Render
+    </div>
+
+                </div>
 
                 <h3 id="render-status-title">
 
