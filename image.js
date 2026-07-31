@@ -142,3 +142,59 @@ export class ImageEngine {
   }
 
 }
+export class ImageEngine {
+
+    constructor() {
+        this.placeholder = "assets/placeholder.webp";
+    }
+
+    async preloadSceneImages(scenes) {
+
+        const results = [];
+
+        for (const scene of scenes) {
+
+            const imageUrl = await this.generateImage(scene.imagePrompt);
+
+            const imageElement = await this.loadImage(imageUrl);
+
+            results.push({
+                ...scene,
+                imageUrl,
+                imageElement
+            });
+
+        }
+
+        return results;
+    }
+
+    async generateImage(prompt) {
+
+        // API integration point
+        // Gemini / OpenAI / HuggingFace এখানে যুক্ত হবে
+
+        console.log("Generating image:", prompt);
+
+        return this.placeholder;
+    }
+
+    loadImage(src) {
+
+        return new Promise((resolve, reject) => {
+
+            const img = new Image();
+
+            img.crossOrigin = "anonymous";
+
+            img.onload = () => resolve(img);
+
+            img.onerror = () => reject(new Error("Image load failed"));
+
+            img.src = src;
+
+        });
+
+    }
+
+}
