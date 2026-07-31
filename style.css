@@ -43,6 +43,45 @@ html{
 
 /* RESET */
 
+.btn-primary,
+.btn-secondary{
+
+transition:.25s;
+
+}
+
+.btn-primary:hover{
+
+transform:translateY(-3px);
+
+box-shadow:0 12px 30px rgba(108,99,255,.35);
+
+}
+
+.btn-secondary:hover{
+
+transform:translateY(-3px);
+
+}
+
+.feature-card,
+.show-card,
+.faq-card{
+
+transition:.3s;
+
+}
+
+.feature-card:hover,
+.show-card:hover,
+.faq-card:hover{
+
+transform:translateY(-8px);
+
+border-color:#6c63ff;
+
+}
+
 .loading-overlay{
     position:fixed;
     inset:0;
