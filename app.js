@@ -4,23 +4,27 @@ import { VoiceEngine } from "./voice.js";
 import { VideoCompositor } from "./video.js";
 import { StorageManager, Utils } from "./storage.js";
 
+import { AIScriptEngine } from "./ai.js";
+import { ImageEngine } from "./image.js";
+import { VoiceEngine } from "./voice.js";
+import { VideoCompositor } from "./video.js";
+import { StorageManager } from "./storage.js";
+
 class FacelessForgeApp {
 
-    constructor() {
+    constructor(){
 
-        this.ai = new AIScriptEngine();
-        this.image = new ImageEngine();
-        this.voice = new VoiceEngine();
-        this.video = new VideoCompositor();
-        this.storage = new StorageManager();
+    this.scriptEngine=new AIScriptEngine();
 
-        this.project = null;
-        this.duration = 30;
+    this.imageEngine=new ImageEngine();
 
-        this.cacheDOM();
-        this.bindEvents();
-        this.loadProjects();
-        this.renderWelcome();
+    this.voiceEngine=new VoiceEngine();
+
+    this.compositor=new VideoCompositor();
+
+    this.storage=new StorageManager();
+
+    this.currentProject=null;
 
     }
 
@@ -791,6 +795,137 @@ document
 ?.addEventListener("click", () => {
 
     this.compositor.stopPreview();
+
+});
+async executePipeline(){
+
+try{
+
+this.showLoading(
+"Generating AI Video",
+"Creating Script..."
+);
+
+const niche=
+document.getElementById("niche-select").value;
+
+const customPrompt=
+document.getElementById("custom-prompt").value;
+
+const script=
+await this.scriptEngine.generateScript({
+
+niche,
+
+durationSec:this.selectedDuration,
+
+customPrompt
+
+});
+
+document.getElementById("loading-text").textContent=
+"Generating Images...";
+
+const scenes=
+await this.imageEngine.preloadSceneImages(
+script.scenes
+);
+
+document.getElementById("loading-text").textContent=
+"Generating Voice...";
+
+const narration=
+await this.voiceEngine.generateNarration(
+scenes
+);
+
+this.currentProject={
+
+title:script.title,
+
+createdAt:new Date().toLocaleString(),
+
+scenes,
+
+narration
+
+};
+
+this.storage.saveProject(
+this.currentProject
+);
+
+document.getElementById("loading-text").textContent=
+"Preparing Preview...";
+
+if(scenes.length){
+
+this.compositor.renderFrame(
+
+scenes[0].imageElement,
+
+0,
+
+scenes[0].text
+
+);
+
+}
+
+document.getElementById(
+"btn-play-preview"
+).disabled=false;
+
+document.getElementById(
+"btn-export-video"
+).disabled=false;
+
+this.hideLoading();
+
+this.showToast(
+"AI Video Generated Successfully"
+);
+
+}
+catch(err){
+
+console.error(err);
+
+this.hideLoading();
+
+this.showToast(
+"Pipeline Failed"
+);
+
+}
+
+}
+
+document
+.getElementById("btn-generate-pipeline")
+?.addEventListener("click",()=>{
+
+this.executePipeline();
+
+});
+
+document
+.getElementById("btn-play-preview")
+?.addEventListener("click",async()=>{
+
+if(!this.currentProject) return;
+
+await this.compositor.playPreview(
+this.currentProject.scenes
+);
+
+});
+
+document
+.getElementById("btn-export-video")
+?.addEventListener("click",async()=>{
+
+await this.compositor.exportVideo();
 
 });
 /* ========================= */
