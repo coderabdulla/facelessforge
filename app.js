@@ -1301,6 +1301,64 @@ window.facelessForgeApp
 );
 
 });
+
+this.storage.clearOldProjects();
+
+export function debounce(fn, delay = 300) {
+
+    let timer;
+
+    return (...args) => {
+
+        clearTimeout(timer);
+
+        timer = setTimeout(() => {
+
+            fn(...args);
+
+        }, delay);
+
+    };
+
+}
+const promptInput =
+document.getElementById(
+"custom-prompt"
+);
+
+promptInput?.addEventListener(
+
+"input",
+
+debounce(() => {
+
+console.log("Typing...");
+
+},300)
+
+);
+this.currentProject?.scenes.forEach(scene => {
+
+    scene.imageElement = null;
+
+});
+requestIdleCallback(() => {
+
+    this.imageEngine
+        .preloadSceneImages(
+            scenes
+        );
+
+});
+const preload = () => {
+    this.imageEngine.preloadSceneImages(scenes);
+};
+
+if ("requestIdleCallback" in window) {
+    requestIdleCallback(preload);
+} else {
+    setTimeout(preload, 0);
+}
 /* ========================= */
 /* End Class */
 /* ========================= */
