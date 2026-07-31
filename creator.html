@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>FacelessForge Creator Studio</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<div id="creator-app">
+
+    <!-- Sidebar -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            <div class="logo-box">F</div>
+
+            <div>
+
+                <h2>FacelessForge</h2>
+
+                <span>Creator Studio</span>
+
+            </div>
+
+        </div>
+
+        <nav class="sidebar-nav">
+
+            <a class="active" href="#">Dashboard</a>
+
+            <a href="#">Projects</a>
+
+            <a href="#">Templates</a>
+
+            <a href="#">Downloads</a>
+
+            <a href="#">Settings</a>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <a href="index.html" class="btn-secondary">
+
+                ← Back Home
+
+            </a>
+
+        </div>
+
+    </aside>
+
+    <!-- Main -->
+
+    <main class="creator-main">
+
+        <header class="creator-header">
+
+            <div>
+
+                <h1>AI Creator Studio</h1>
+
+                <p>Create complete faceless videos with one click.</p>
+
+            </div>
+
+            <button id="btn-generate-pipeline" class="btn-primary">
+
+                Generate Video
+
+            </button>
+
+        </header>
+
+        <section class="creator-grid">
+            <!-- ========================= -->
+<!-- LEFT PANEL -->
+<!-- ========================= -->
+
+<div class="creator-left">
+
+    <!-- Prompt Card -->
+
+    <div class="creator-card">
+
+        <h2>AI Prompt</h2>
+
+        <p>Describe the video you want to create.</p>
+
+        <textarea
+            id="custom-prompt"
+            class="input"
+            placeholder="Example: Create a motivational video about success..."
+        ></textarea>
+
+    </div>
+
+    <!-- Niche -->
+
+    <div class="creator-card">
+
+        <h2>Select Niche</h2>
+
+        <select id="niche-select" class="input">
+
+            <option value="motivation">Motivation</option>
+            <option value="business">Business</option>
+            <option value="finance">Finance</option>
+            <option value="history">History</option>
+            <option value="facts">Facts</option>
+            <option value="horror">Horror</option>
+            <option value="health">Health</option>
+            <option value="education">Education</option>
+            <option value="storytelling">Storytelling</option>
+
+        </select>
+
+    </div>
+
+    <!-- Duration -->
+
+    <div class="creator-card">
+
+        <h2>Video Duration</h2>
+
+        <div id="duration-selector" class="duration-grid">
+
+            <button class="btn-option active" data-duration="30">30s</button>
+
+            <button class="btn-option" data-duration="60">60s</button>
+
+            <button class="btn-option" data-duration="90">90s</button>
+
+            <button class="btn-option" data-duration="180">3 Min</button>
+
+            <button class="btn-option" data-duration="300">5 Min</button>
+
+        </div>
+
+    </div>
+
+    <!-- Voice -->
+
+    <div class="creator-card">
+
+        <h2>Voice Settings</h2>
+
+        <label>Speed</label>
+
+        <input
+            type="range"
+            id="voice-speed"
+            min="0.8"
+            max="1.5"
+            step="0.1"
+            value="1"
+        >
+
+        <label>Pitch</label>
+
+        <input
+            type="range"
+            id="voice-pitch"
+            min="0.5"
+            max="1.5"
+            step="0.1"
+            value="1"
+        >
+
+    </div>
+
+    <!-- Subtitle -->
+
+    <div class="creator-card">
+
+        <h2>Subtitle Style</h2>
+
+        <select
+            id="subtitle-style"
+            class="input"
+        >
+
+            <option value="modern">Modern</option>
+
+            <option value="minimal">Minimal</option>
+
+            <option value="bold">Bold</option>
+
+            <option value="tiktok">TikTok Style</option>
+
+        </select>
+
+    </div>
+
+    <!-- Transition -->
+
+    <div class="creator-card">
+
+        <h2>Image Transition</h2>
+
+        <select
+            id="transition-style"
+            class="input"
+        >
+
+            <option value="fade">Fade</option>
+
+            <option value="zoom">Zoom</option>
+
+            <option value="slide">Slide</option>
+
+            <option value="kenburns">Ken Burns</option>
+
+        </select>
+
+    </div>
+
+</div>
+<!-- ========================= -->
+<!-- RIGHT PANEL -->
+<!-- ========================= -->
+
+<div class="creator-right">
+
+    <!-- Live Preview -->
+
+    <div class="creator-card preview-card">
+
+        <div class="preview-header">
+
+            <h2>Live Preview</h2>
+
+            <span>1080 × 1920</span>
+
+        </div>
+
+        <div class="phone-frame">
+
+            <canvas
+                id="video-canvas"
+                width="1080"
+                height="1920">
+            </canvas>
+
+            <div id="subtitle-overlay">
+
+                <span id="subtitle-text">
+
+                    READY TO CREATE
+
+                </span>
+
+            </div>
+
+            <div
+                id="render-overlay"
+                class="hidden">
+
+                <div class="loader"></div>
+
+                <h3 id="render-status-title">
+
+                    Preparing AI...
+
+                </h3>
+
+                <p id="render-status-subtitle">
+
+                    Please wait...
+
+                </p>
+
+                <div class="progress">
+
+                    <div
+                        id="render-progress-bar">
+                    </div>
+
+                </div>
+
+                <span
+                    id="render-progress-percent">
+
+                    0%
+
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Preview Controls -->
+
+    <div class="creator-card">
+
+        <div class="action-grid">
+
+            <button
+                id="btn-play-preview"
+                class="btn-secondary"
+                disabled>
+
+                ▶ Preview
+
+            </button>
+
+            <button
+                id="btn-export-video"
+                class="btn-primary"
+                disabled>
+
+                ⬇ Export MP4
+
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- Scene List -->
+
+    <div
+        id="scenes-inspector-card"
+        class="creator-card hidden">
+
+        <div class="card-header">
+
+            <h2>Generated Scenes</h2>
+
+            <span
+                id="scene-count-badge">
+
+                0 Scenes
+
+            </span>
+
+        </div>
+
+        <div
+            id="scenes-list">
+
+        </div>
+
+    </div>
+
+    <!-- Project Information -->
+
+    <div class="creator-card">
+
+        <h2>Current Project</h2>
+
+        <div class="project-info">
+
+            <div>
+
+                <small>Status</small>
+
+                <strong id="project-status">
+
+                    Ready
+
+                </strong>
+
+            </div>
+
+            <div>
+
+                <small>Scenes</small>
+
+                <strong id="project-scenes">
+
+                    0
+
+                </strong>
+
+            </div>
+
+            <div>
+
+                <small>Duration</small>
+
+                <strong id="project-duration">
+
+                    30s
+
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+        </section>
+        <!-- ========================= -->
+<!-- PROJECTS -->
+<!-- ========================= -->
+
+<section class="creator-section">
+
+    <div class="creator-card">
+
+        <div class="section-header">
+
+            <h2>Saved Projects</h2>
+
+            <button id="btn-new-project" class="btn-primary">
+
+                + New Project
+
+            </button>
+
+        </div>
+
+        <div id="projects-grid" class="projects-grid">
+
+        </div>
+
+        <div id="no-projects-state" class="empty-state">
+
+            <h3>No Projects Found</h3>
+
+            <p>Create your first AI video to see projects here.</p>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ========================= -->
+<!-- DOWNLOADS -->
+<!-- ========================= -->
+
+<section class="creator-section">
+
+    <div class="creator-card">
+
+        <div class="section-header">
+
+            <h2>Downloads</h2>
+
+            <button
+                id="btn-clear-downloads"
+                class="btn-secondary">
+
+                Clear
+
+            </button>
+
+        </div>
+
+        <div id="downloads-list">
+
+        </div>
+
+        <div id="no-downloads-state" class="empty-state">
+
+            <h3>No Exports Yet</h3>
+
+            <p>Your exported videos will appear here.</p>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ========================= -->
+<!-- SETTINGS -->
+<!-- ========================= -->
+
+<section class="creator-section">
+
+    <div class="creator-card">
+
+        <h2>Settings</h2>
+
+        <div class="setting-item">
+
+            <label>
+
+                Background Music
+
+            </label>
+
+            <input
+                type="checkbox"
+                id="bg-music-toggle"
+                checked>
+
+        </div>
+
+        <div class="setting-item">
+
+            <label>
+
+                Auto Save Projects
+
+            </label>
+
+            <input
+                type="checkbox"
+                id="auto-save-toggle"
+                checked>
+
+        </div>
+
+        <button
+            id="btn-purge-storage"
+            class="btn-secondary">
+
+            Clear Local Storage
+
+        </button>
+
+    </div>
+
+</section>
+
+<!-- ========================= -->
+<!-- ACCOUNT -->
+<!-- ========================= -->
+
+<section class="creator-section">
+
+    <div class="creator-card">
+
+        <h2>Creator Account</h2>
+
+        <div class="profile-box">
+
+            <div class="avatar">
+
+                F
+
+            </div>
+
+            <div>
+
+                <strong id="user-display-name">
+
+                    Guest Creator
+
+                </strong>
+
+                <p>Local Session</p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+</main>
+
+</div>
+
+<!-- Toast -->
+
+<div id="toast-container"></div>
+
+<!-- Loading -->
+
+<div id="global-loader" class="hidden">
+
+    <div class="loader"></div>
+
+</div>
+
+<script type="module" src="app.js"></script>
+
+</body>
+</html>
