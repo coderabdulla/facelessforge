@@ -2,6 +2,9 @@
 export class ImageEngine {
 
     async generateImage(prompt) {
+        constructor() {
+    this.cache = new Map();
+        }
 
         const response = await fetch("/api/generate-image", {
             method: "POST",
