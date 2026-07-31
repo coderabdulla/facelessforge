@@ -1058,6 +1058,87 @@ this.renderProjects();
 });
 this.renderProjects();
 
+bindTemplates(){
+
+const templates={
+
+motivation:{
+prompt:"Create a powerful motivational short video.",
+duration:30
+},
+
+finance:{
+prompt:"Explain one personal finance tip.",
+duration:45
+},
+
+history:{
+prompt:"Tell an interesting historical story.",
+duration:60
+},
+
+horror:{
+prompt:"Create a creepy horror story.",
+duration:60
+},
+
+facts:{
+prompt:"Share five amazing science facts.",
+duration:45
+},
+
+business:{
+prompt:"Business growth strategy.",
+duration:60
+},
+
+quotes:{
+prompt:"Generate inspirational quotes.",
+duration:30
+},
+
+islamic:{
+prompt:"Share an authentic Islamic reminder.",
+duration:45
+}
+
+};
+
+document.querySelectorAll(".template-card")
+.forEach(card=>{
+
+card.addEventListener("click",()=>{
+
+const data=
+templates[
+card.dataset.template
+];
+
+document.getElementById(
+"custom-prompt"
+).value=data.prompt;
+
+this.selectedDuration=
+data.duration;
+
+const niche=
+document.getElementById(
+"niche-select"
+);
+
+if(niche){
+
+niche.value=
+card.dataset.template;
+
+}
+
+});
+
+});
+
+}
+this.bindTemplates();
 
 /* ========================= */
 /* End Class */
