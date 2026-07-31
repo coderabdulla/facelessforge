@@ -618,8 +618,86 @@ toast.classList.add("hidden");
 },3000);
 
 }
+autoSave(){
 
+if(!this.currentProject) return;
 
+this.storage.saveProject(
+this.currentProject
+);
+
+this.showToast("Project Saved");
+this.autoSave();
+}
+renderProjects(){
+
+const container =
+document.getElementById("projects-grid");
+
+if(!container) return;
+
+container.innerHTML="";
+
+const projects =
+this.storage.getProjects();
+
+projects.forEach(project=>{
+
+container.innerHTML+=`
+
+<div class="project-card">
+
+<h3>${project.title}</h3>
+
+<p>${project.createdAt}</p>
+
+<button class="load-btn"
+data-id="${project.id}">
+Open
+</button>
+
+<button class="delete-btn"
+data-id="${project.id}">
+Delete
+</button>
+
+</div>
+
+`;
+
+});
+
+}
+document.addEventListener("click",e=>{
+
+if(e.target.classList.contains("load-btn")){
+
+const id=Number(
+e.target.dataset.id
+);
+
+this.currentProject=
+this.storage.loadProject(id);
+
+this.showToast("Project Loaded");
+
+}
+
+if(e.target.classList.contains("delete-btn")){
+
+const id=Number(
+e.target.dataset.id
+);
+
+this.storage.deleteProject(id);
+
+this.renderProjects();
+
+this.showToast("Project Deleted");
+
+}
+
+});
 /* ========================= */
 /* End Class */
 /* ========================= */
