@@ -32,6 +32,26 @@
 
 /* RESET */
 
+.music-panel{
+
+background:#1d1d1d;
+
+padding:20px;
+
+border-radius:16px;
+
+margin-top:20px;
+
+}
+
+.music-panel select{
+
+width:100%;
+
+margin:12px 0;
+
+}
+
 .template-grid{
 
 display:grid;
