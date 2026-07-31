@@ -569,6 +569,56 @@ saveCurrent(){
     this.refreshProjects();
 
 }
+showLoading(title, text){
+this.showLoading(
+"Generating Project",
+"Preparing AI pipeline..."
+);
+
+setTimeout(()=>{
+
+this.hideLoading();
+
+this.showToast(
+"Pipeline Started Successfully"
+);
+
+},2000);
+const overlay =
+document.getElementById("loading-overlay");
+
+document.getElementById("loading-title").textContent=title;
+
+document.getElementById("loading-text").textContent=text;
+
+overlay.classList.remove("hidden");
+
+}
+
+hideLoading(){
+
+document
+.getElementById("loading-overlay")
+.classList.add("hidden");
+
+}
+
+showToast(message){
+
+const toast=document.getElementById("toast");
+
+toast.textContent=message;
+
+toast.classList.remove("hidden");
+
+setTimeout(()=>{
+
+toast.classList.add("hidden");
+
+},3000);
+
+}
+
 
 /* ========================= */
 /* End Class */
