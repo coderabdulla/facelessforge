@@ -751,6 +751,29 @@ document
 document
 .getElementById("btn-export-video")
 .disabled=false;
+
+const narration =
+await this.voiceEngine.generateNarration(
+this.currentProject.scenes
+);
+
+this.currentProject.narration =
+narration;
+
+document
+.getElementById("btn-play-preview")
+?.addEventListener("click", async () => {
+
+if(!this.currentProject) return;
+
+for(const scene of this.currentProject.scenes){
+
+await this.voiceEngine.speak(scene.text);
+
+}
+
+});
+
 /* ========================= */
 /* End Class */
 /* ========================= */
