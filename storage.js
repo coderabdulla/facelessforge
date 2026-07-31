@@ -136,3 +136,26 @@ deleteProject(index){
     );
 
 }
+saveSettings(settings){
+
+localStorage.setItem(
+
+"ff_settings",
+
+JSON.stringify(settings)
+
+);
+
+}
+
+getSettings(){
+
+return JSON.parse(
+
+localStorage.getItem("ff_settings")
+
+||"{}"
+
+);
+
+}
