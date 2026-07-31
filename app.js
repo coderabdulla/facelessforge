@@ -1,3 +1,4 @@
+"use strict";
 import { AIScriptEngine } from "./ai.js";
 import { ImageEngine } from "./image.js";
 import { VoiceEngine } from "./voice.js";
@@ -10,7 +11,12 @@ import { VoiceEngine } from "./voice.js";
 import { VideoCompositor } from "./video.js";
 import { StorageManager } from "./storage.js";
 import { FFmpegEngine } from "./ffmpeg.js";
-
+import { AIScriptEngine } from "./ai.js";
+import { ImageEngine } from "./image.js";
+import { VoiceEngine } from "./voice.js";
+import { VideoCompositor } from "./video.js";
+import { StorageManager, Utils } from "./storage.js";
+import { FFmpegEngine } from "./ffmpeg.js";
 class FacelessForgeApp {
 
     constructor(){
