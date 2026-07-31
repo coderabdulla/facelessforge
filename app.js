@@ -34,6 +34,48 @@ class FacelessForgeApp {
 new FFmpegEngine();
 
     this.currentProject=null;
+        showLoading(title="Loading",message="Please wait..."){
+
+const overlay=document.getElementById("loading-overlay");
+
+overlay?.classList.remove("hidden");
+
+document.getElementById("loading-title").textContent=title;
+
+document.getElementById("loading-message").textContent=message;
+
+}
+
+hideLoading(){
+
+document.getElementById("loading-overlay")
+?.classList.add("hidden");
+
+}
+
+showToast(message,type="success"){
+
+const container=
+document.getElementById("toast-container");
+
+if(!container) return;
+
+const toast=
+document.createElement("div");
+
+toast.className=`toast ${type}`;
+
+toast.textContent=message;
+
+container.appendChild(toast);
+
+setTimeout(()=>{
+
+toast.remove();
+
+},3000);
+
+}
 
     }
 
