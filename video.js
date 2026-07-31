@@ -342,3 +342,16 @@ this.width = width;
 this.height = height;
 
 }
+async renderProject(project) {
+
+    if (!project) {
+        throw new Error("No project loaded.");
+    }
+
+    const scenes = project.scenes || [];
+
+    await this.playPreview(scenes);
+
+    return await this.exportVideo(scenes);
+
+}
