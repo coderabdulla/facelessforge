@@ -53,20 +53,10 @@ Return ONLY valid JSON in this format:
     return JSON.parse(clean);
 
 }
-const response = await fetch("/api/generate-script", {
+import { safeFetch }
+from "./storage.js";
 
-    method: "POST",
-
-    headers: {
-        "Content-Type": "application/json"
-    },
-
-    body: JSON.stringify({
-
-        prompt: customPrompt
-
-    })
-
-});
+const response =
+await safeFetch(...);
 
 const result = await response.json();
