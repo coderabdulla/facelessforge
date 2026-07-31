@@ -1,9 +1,16 @@
-# FacelessForge 2.0
+# FacelessForge
 
-Client-side AI faceless video generator for 9:16 vertical content.
+AI Faceless Video Generator
 
-## How to Run
+## Features
 
-1. Clone or copy all files into a directory.
-2. Serve locally using an HTTP server (e.g., `npx serve .` or Python `python -m http.server`).
-3. Open `http://localhost:3000` or the corresponding port in Chrome/Edge.
+- AI Script
+- AI Images
+- AI Voice
+- Auto Subtitle
+- MP4 Export
+- Firebase Login
+
+## Deployment
+
+Deploy with Vercel.
