@@ -1139,6 +1139,35 @@ card.dataset.template;
 
 }
 this.bindTemplates();
+const musicSelect =
+document.getElementById("music-select");
+
+const volume =
+document.getElementById("music-volume");
+
+if (musicSelect && volume) {
+
+    musicSelect.addEventListener("change", () => {
+
+        this.compositor.setMusic(
+
+            musicSelect.value,
+
+            Number(volume.value)
+
+        );
+
+    });
+
+    volume.addEventListener("input", () => {
+
+        this.compositor.music.volume =
+
+            Number(volume.value);
+
+    });
+
+}
 
 /* ========================= */
 /* End Class */
