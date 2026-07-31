@@ -1,201 +1,117 @@
 export class AIScriptEngine {
-  constructor() {
-    this.wordsPerMinute = 150;
 
-    this.niches = {
-      motivation: {
-        title: "Motivation",
-        hooks: [
-          "Most people fail because they quit too early.",
-          "Success starts with one decision.",
-          "Nobody is coming to save you."
-        ]
-      },
-
-      business: {
-        title: "Business",
-        hooks: [
-          "The richest people solve expensive problems.",
-          "Money follows value.",
-          "Business is a game of trust."
-        ]
-      },
-
-      finance: {
-        title: "Finance",
-        hooks: [
-          "Poor people buy liabilities.",
-          "Wealth grows quietly.",
-          "Invest before you spend."
-        ]
-      },
-
-      horror: {
-        title: "Horror",
-        hooks: [
-          "Nobody entered that house twice.",
-          "The camera captured something impossible.",
-          "The forest hides a terrifying secret."
-        ]
-      },
-
-      history: {
-        title: "History",
-        hooks: [
-          "History changed forever in one night.",
-          "An empire disappeared mysteriously.",
-          "Nobody expected what happened next."
-        ]
-      },
-
-      islamic: {
-        title: "Islamic",
-        hooks: [
-          "Allah always sees your efforts.",
-          "Every hardship has wisdom.",
-          "Patience is stronger than power."
-        ]
-      },
-
-      quotes: {
-        title: "Stoic Quotes",
-        hooks: [
-          "Control your mind.",
-          "Silence is power.",
-          "Discipline beats talent."
-        ]
-      },
-
-      facts: {
-        title: "Facts",
-        hooks: [
-          "Your brain uses electricity.",
-          "Space is completely silent.",
-          "Octopuses have three hearts."
-        ]
-      },
-
-      health: {
-        title: "Health",
-        hooks: [
-          "Sleep is your superpower.",
-          "Water changes everything.",
-          "Walking is underrated."
-        ]
-      },
-
-      education: {
-        title: "Education",
-        hooks: [
-          "Learning never stops.",
-          "Knowledge compounds daily.",
-          "Curiosity creates intelligence."
-        ]
-      },
-
-      storytelling: {
-        title: "Story",
-        hooks: [
-          "A stranger changed everything.",
-          "One letter changed his life.",
-          "The ending shocked everyone."
-        ]
-      }
-    };
-  }
-
-  async generateScript({
-    niche = "motivation",
-    durationSec = 30,
-    customPrompt = ""
-  }) {
-
-    const config = this.niches[niche] || this.niches.motivation;
-
-    const totalWords = Math.floor(
-      this.wordsPerMinute * durationSec / 60
-    );
-
-    const sceneCount = Math.max(
-      4,
-      Math.round(durationSec / 6)
-    );
-
-    let narration = [];
-
-    if (customPrompt.trim()) {
-      narration.push(customPrompt.trim());
-    } else {
-      narration.push(
-        config.hooks[
-          Math.floor(Math.random() * config.hooks.length)
-        ]
-      );
+    constructor() {
+        this.sentencesPerMinute = 22;
     }
 
-    while (
-      narration.join(" ").split(" ").length < totalWords
-    ) {
+    async generateScript({
+        niche,
+        durationSec,
+        customPrompt = ""
+    }) {
 
-      narration.push(
-        `This is scene ${narration.length + 1}. Stay focused, keep watching, and remember this lesson because it can completely change your perspective.`
-      );
+        const sceneCount = Math.max(
+            4,
+            Math.ceil(durationSec / 8)
+        );
+
+        const topic =
+            customPrompt.trim() || this.getTopic(niche);
+
+        const scenes = [];
+
+        for (let i = 0; i < sceneCount; i++) {
+
+            scenes.push({
+
+                id: i + 1,
+
+                text: this.buildSentence(
+                    topic,
+                    i,
+                    sceneCount
+                ),
+
+                imagePrompt: this.buildPrompt(
+                    topic,
+                    i
+                )
+
+            });
+
+        }
+
+        return {
+
+            nicheTitle: niche,
+
+            title: topic,
+
+            duration: durationSec,
+
+            scenes
+
+        };
 
     }
 
-    const fullScript = narration.join(" ");
+    getTopic(niche) {
 
-    const words = fullScript.split(" ");
+        const topics = {
 
-    const wordsPerScene = Math.ceil(
-      words.length / sceneCount
-    );
+            motivation: "Never Give Up",
 
-    const scenes = [];
+            business: "Build Your Business",
 
-    for (let i = 0; i < sceneCount; i++) {
+            finance: "Wealth Mindset",
 
-      const start = i * wordsPerScene;
+            history: "Ancient Mystery",
 
-      const end = start + wordsPerScene;
+            horror: "Dark Forest Story",
 
-      const text = words
-        .slice(start, end)
-        .join(" ");
+            islamic: "Islamic Wisdom",
 
-      scenes.push({
+            quotes: "Stoic Philosophy",
 
-        id: i + 1,
+            facts: "Amazing Science Facts",
 
-        narration: text,
+            health: "Healthy Lifestyle",
 
-        duration: durationSec / sceneCount,
+            education: "Learning Faster",
 
-        seed: Math.floor(Math.random() * 999999),
+            storytelling: "Short Story"
 
-        imagePrompt:
-          `${config.title}, cinematic, realistic, ultra detailed, dramatic lighting, 9:16 vertical, photorealistic`
+        };
 
-      });
+        return topics[niche] || "Faceless Video";
 
     }
 
-    return {
+    buildSentence(topic, index, total) {
 
-      niche,
+        if (index === 0)
+            return `Have you ever wondered about ${topic}?`;
 
-      nicheTitle: config.title,
+        if (index === total - 1)
+            return `Follow for more amazing content about ${topic}.`;
 
-      durationSec,
+        return `${topic} can completely change the way you think.`;
 
-      totalWords,
+    }
 
-      sceneCount,
+    buildPrompt(topic, index) {
 
-      fullScript,
+        return `
+cinematic,
+ultra realistic,
+8k,
+vertical composition,
+${topic},
+scene ${index + 1},
+dramatic lighting,
+high detail
+`;
 
-      scenes
+    }
 
-    };
-  }
 }
