@@ -1252,6 +1252,17 @@ document.documentElement.dataset.theme =
 settings.theme;
 
 }
+
+const voiceBlob =
+await this.voiceEngine.generateVoice(
+
+script.scenes
+      .map(scene => scene.text)
+      .join(" ")
+
+);
+
+this.currentProject.voice = voiceBlob;
 /* ========================= */
 /* End Class */
 /* ========================= */
