@@ -1,6 +1,7 @@
 // ===============================
 // FacelessForge Landing Controller
 // ===============================
+"use strict";
 
 document.addEventListener("DOMContentLoaded", () => {
 
