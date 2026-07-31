@@ -32,6 +32,42 @@
 
 /* RESET */
 
+.page-view{
+display:block;
+}
+
+.page-view.hidden{
+display:none;
+}
+
+#sidebar{
+transition:.3s;
+}
+
+#sidebar.open{
+left:0;
+}
+
+@media(max-width:900px){
+
+#sidebar{
+
+position:fixed;
+
+left:-280px;
+
+top:0;
+
+width:260px;
+
+height:100vh;
+
+z-index:1000;
+
+}
+
+}
+
  html{
 scroll-behavior:smooth;
 }
