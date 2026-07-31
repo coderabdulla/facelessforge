@@ -1359,6 +1359,18 @@ if ("requestIdleCallback" in window) {
 } else {
     setTimeout(preload, 0);
 }
+import { Security } from "./storage.js";
+
+const prompt =
+Security.validatePrompt(
+
+document.getElementById(
+"custom-prompt"
+).value
+
+);
+customPrompt: prompt
+    element.textContent = userText;
 /* ========================= */
 /* End Class */
 /* ========================= */
