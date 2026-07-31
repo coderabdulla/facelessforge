@@ -159,3 +159,14 @@ localStorage.getItem("ff_settings")
 );
 
 }
+project.voice = project.voice || null;
+
+project.music = project.music || "";
+
+project.settings = {
+
+    resolution: "1080x1920",
+
+    fps: 30
+
+};
