@@ -32,6 +32,28 @@
 
 /* RESET */
 
+.effects-panel{
+
+background:#1d1d1d;
+
+padding:20px;
+
+margin-top:20px;
+
+border-radius:16px;
+
+}
+
+.effects-panel select{
+
+width:100%;
+
+padding:10px;
+
+border-radius:10px;
+
+}
+
 .music-panel{
 
 background:#1d1d1d;
