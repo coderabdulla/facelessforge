@@ -2,6 +2,17 @@
    FACELESSFORGE 3.0
    PREMIUM UI - PART 1A
 ========================================= */
+html{
+    scroll-behavior:smooth;
+}
+
+*{
+    transition:
+    background .25s,
+    color .25s,
+    border-color .25s,
+    transform .25s;
+}
 
 :root{
 
