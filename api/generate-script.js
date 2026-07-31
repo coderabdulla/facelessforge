@@ -45,3 +45,10 @@ if (!prompt || prompt.length > 1000) {
     });
 
 }
+const ip =
+
+req.headers["x-forwarded-for"]
+
+||
+
+req.socket.remoteAddress;
