@@ -1,129 +1,95 @@
 export class VoiceEngine {
-  constructor() {
-    this.synth = window.speechSynthesis;
-    this.voice = null;
-    this.rate = 1.0;
-    this.pitch = 1.0;
-    this.volume = 1.0;
 
-    this.loadVoices();
-  }
+    constructor() {
+        this.synth = window.speechSynthesis;
+        this.voice = null;
+        this.rate = 1.0;
+        this.pitch = 1.0;
 
-  loadVoices() {
-    const setVoice = () => {
-      const voices = this.synth.getVoices();
+        this.loadVoices();
+    }
 
-      this.voice =
-        voices.find(v => v.lang.startsWith("en") && v.name.toLowerCase().includes("female")) ||
-        voices.find(v => v.lang.startsWith("en")) ||
-        voices[0] ||
-        null;
-    };
+    loadVoices() {
 
-    setVoice();
+        const setVoice = () => {
 
-    window.speechSynthesis.onvoiceschanged = () => {
-      setVoice();
-    };
-  }
+            const voices = this.synth.getVoices();
 
-  setRate(rate) {
-    this.rate = Number(rate) || 1;
-  }
+            this.voice =
+                voices.find(v => v.lang.startsWith("en"))
+                || voices[0]
+                || null;
 
-  setPitch(pitch) {
-    this.pitch = Number(pitch) || 1;
-  }
+        };
 
-  setVolume(volume) {
-    this.volume = Number(volume) || 1;
-  }
+        setVoice();
 
-  stop() {
-    this.synth.cancel();
-  }
-
-  speak(text) {
-    return new Promise(resolve => {
-
-      this.stop();
-
-      const utter = new SpeechSynthesisUtterance(text);
-
-      utter.voice = this.voice;
-      utter.rate = this.rate;
-      utter.pitch = this.pitch;
-      utter.volume = this.volume;
-
-      utter.onend = () => resolve();
-      utter.onerror = () => resolve();
-
-      this.synth.speak(utter);
-
-    });
-  }
-
-  async speakScenes(scenes, onSceneStart = null) {
-
-    if (!Array.isArray(scenes)) return;
-
-    for (let i = 0; i < scenes.length; i++) {
-
-      const scene = scenes[i];
-
-      if (typeof onSceneStart === "function") {
-        onSceneStart(scene, i);
-      }
-
-      await this.speak(scene.narration);
+        speechSynthesis.onvoiceschanged = setVoice;
 
     }
 
-  }
+    setRate(rate = 1) {
+        this.rate = rate;
+    }
 
-  estimateDuration(text) {
+    setPitch(pitch = 1) {
+        this.pitch = pitch;
+    }
 
-    const words = text.trim().split(/\s+/).length;
+    async speak(text) {
 
-    return Math.max(
-      2,
-      Math.round((words / 150) * 60)
-    );
+        return new Promise(resolve => {
 
-  }
+            if (!text) return resolve();
 
-  generateSubtitleTimeline(scenes) {
+            const utter =
+                new SpeechSynthesisUtterance(text);
 
-    let current = 0;
+            utter.voice = this.voice;
 
-    return scenes.map(scene => {
+            utter.rate = this.rate;
 
-      const duration =
-        scene.duration ||
-        this.estimateDuration(scene.narration);
+            utter.pitch = this.pitch;
 
-      const item = {
+            utter.onend = () => resolve();
 
-        text: scene.narration,
+            this.synth.cancel();
 
-        start: current,
+            this.synth.speak(utter);
 
-        end: current + duration
+        });
 
-      };
+    }
 
-      current += duration;
+    stop() {
 
-      return item;
+        this.synth.cancel();
 
-    });
+    }
 
-  }
+    async generateNarration(scenes) {
 
-  isSupported() {
-    return (
-      "speechSynthesis" in window &&
-      "SpeechSynthesisUtterance" in window
-    );
-  }
+        const narration = [];
+
+        for (const scene of scenes) {
+
+            narration.push({
+
+                id: scene.id,
+
+                text: scene.text,
+
+                duration: Math.max(
+                    3,
+                    Math.ceil(scene.text.split(" ").length / 2.5)
+                )
+
+            });
+
+        }
+
+        return narration;
+
+    }
+
 }
