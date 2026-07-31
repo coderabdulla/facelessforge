@@ -3,15 +3,15 @@ export class VoiceEngine {
     constructor() {
         this.synth = window.speechSynthesis;
         this.voice = null;
-        this.rate = 1.0;
-        this.pitch = 1.0;
+        this.rate = 1;
+        this.pitch = 1;
 
         this.loadVoices();
     }
 
     loadVoices() {
 
-        const setVoice = () => {
+        const load = () => {
 
             const voices = this.synth.getVoices();
 
@@ -22,17 +22,17 @@ export class VoiceEngine {
 
         };
 
-        setVoice();
+        load();
 
-        speechSynthesis.onvoiceschanged = setVoice;
+        speechSynthesis.onvoiceschanged = load;
 
     }
 
-    setRate(rate = 1) {
+    setRate(rate) {
         this.rate = rate;
     }
 
-    setPitch(pitch = 1) {
+    setPitch(pitch) {
         this.pitch = pitch;
     }
 
@@ -40,55 +40,49 @@ export class VoiceEngine {
 
         return new Promise(resolve => {
 
-            if (!text) return resolve();
-
             const utter =
                 new SpeechSynthesisUtterance(text);
 
             utter.voice = this.voice;
-
             utter.rate = this.rate;
-
             utter.pitch = this.pitch;
 
-            utter.onend = () => resolve();
+            utter.onend = resolve;
 
             this.synth.cancel();
-
             this.synth.speak(utter);
 
         });
 
     }
 
-    stop() {
+    async generateNarration(scenes) {
 
-        this.synth.cancel();
+        return scenes.map(scene => ({
+
+            id: scene.id,
+
+            text: scene.text,
+
+            duration:
+                Math.max(
+                    3,
+                    Math.ceil(scene.text.split(" ").length / 2.5)
+                ),
+
+            audioUrl: null
+
+        }));
 
     }
 
-    async generateNarration(scenes) {
+    async generateWithElevenLabs(text) {
 
-        const narration = [];
+        // Backend API call এখানে হবে
 
-        for (const scene of scenes) {
-
-            narration.push({
-
-                id: scene.id,
-
-                text: scene.text,
-
-                duration: Math.max(
-                    3,
-                    Math.ceil(scene.text.split(" ").length / 2.5)
-                )
-
-            });
-
-        }
-
-        return narration;
+        throw new Error(
+            "ElevenLabs backend not connected yet."
+        );
 
     }
 
