@@ -928,6 +928,28 @@ document
 await this.compositor.exportVideo();
 
 });
+
+document
+.getElementById("voice-speed")
+?.addEventListener("input", e => {
+
+    this.voiceEngine.setRate(
+        Number(e.target.value)
+    );
+
+});
+
+document
+.getElementById("voice-pitch")
+?.addEventListener("input", e => {
+
+    this.voiceEngine.setPitch(
+        Number(e.target.value)
+    );
+
+});
+
+
 /* ========================= */
 /* End Class */
 /* ========================= */
