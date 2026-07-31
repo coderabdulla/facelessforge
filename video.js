@@ -355,3 +355,32 @@ async renderProject(project) {
     return await this.exportVideo(scenes);
 
 }
+async renderScenes(scenes) {
+
+    for (const scene of scenes) {
+
+        await this.renderScene(scene);
+
+    }
+
+}
+updateProgress(current,total){
+
+const percent =
+Math.round(
+(current/total)*100
+);
+
+const bar =
+document.getElementById(
+"render-progress"
+);
+
+if(bar){
+
+bar.style.width =
+percent+"%";
+
+}
+
+}
