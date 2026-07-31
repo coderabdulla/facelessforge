@@ -190,3 +190,26 @@ clearOldProjects(max = 10) {
     );
 
 }
+export class Security {
+
+    static sanitize(text = "") {
+
+        return String(text)
+            .replace(/[<>]/g, "")
+            .trim();
+
+    }
+
+    static validatePrompt(text) {
+
+        if (!text || text.length < 5)
+            throw new Error("Prompt is too short.");
+
+        if (text.length > 1000)
+            throw new Error("Prompt is too long.");
+
+        return this.sanitize(text);
+
+    }
+
+}
