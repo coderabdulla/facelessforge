@@ -9,7 +9,58 @@ export class VideoCompositor {
         this.height = this.canvas.height;
 
         this.isPlaying = false;
+        this.mediaRecorder = null;
+this.recordedChunks = [];
+this.stream = this.canvas.captureStream(30);
+
+    };
+
+    this.mediaRecorder.start();
+
+        }
     }
+startRecording() {
+
+    this.recordedChunks = [];
+
+    this.mediaRecorder = new MediaRecorder(this.stream, {
+        mimeType: "video/webm;codecs=vp9"
+    });
+
+    this.mediaRecorder.ondataavailable = (e) => {
+
+        if (e.data.size > 0) {
+            this.recordedChunks.push(e.data);
+        }
+
+    };
+
+    this.mediaRecorder.start();
+
+}
+
+stopRecording() {
+
+    return new Promise(resolve => {
+
+        this.mediaRecorder.onstop = () => {
+
+            const blob = new Blob(
+                this.recordedChunks,
+                {
+                    type: "video/webm"
+                }
+            );
+
+            resolve(blob);
+
+        };
+
+        this.mediaRecorder.stop();
+
+    });
+
+}
 
     renderFrame(image, progress = 0, subtitle = "") {
 
@@ -118,13 +169,15 @@ export class VideoCompositor {
 
     }
 
-    async exportVideo() {
+    async exportVideo(scenes) {
 
-        alert(
-            "MP4/WebM export will be enabled in Phase 3."
-        );
+    this.startRecording();
 
-        return null;
+    await this.playPreview(scenes);
+
+    const blob = await this.stopRecording();
+
+    return blob;
 
     }
 
