@@ -1,91 +1,50 @@
 export class StorageManager {
-  constructor() {
-    this.PROJECT_KEY = "facelessforge_projects";
-    this.EXPORT_KEY = "facelessforge_exports";
-  }
 
-  saveProject(project) {
-    const projects = this.getProjects();
-    projects.unshift({
-      id: Date.now(),
-      ...project
-    });
-    localStorage.setItem(
-      this.PROJECT_KEY,
-      JSON.stringify(projects)
-    );
-  }
-
-  getProjects() {
-    try {
-      return JSON.parse(
-        localStorage.getItem(this.PROJECT_KEY)
-      ) || [];
-    } catch {
-      return [];
-    }
-  }
-
-  getProject(id) {
-    return this.getProjects().find(p => p.id === id);
-  }
-
-  deleteProject(id) {
-    const projects = this.getProjects().filter(
-      p => p.id !== id
-    );
-
-    localStorage.setItem(
-      this.PROJECT_KEY,
-      JSON.stringify(projects)
-    );
-  }
-
-  saveExport(fileName) {
-    const exports = this.getExports();
-
-    exports.unshift({
-      id: Date.now(),
-      fileName,
-      createdAt: new Date().toISOString()
-    });
-
-    localStorage.setItem(
-      this.EXPORT_KEY,
-      JSON.stringify(exports)
-    );
-  }
-
-  getExports() {
-    try {
-      return JSON.parse(
-        localStorage.getItem(this.EXPORT_KEY)
-      ) || [];
-    } catch {
-      return [];
-    }
-  }
-
-  clearExports() {
-    localStorage.removeItem(this.EXPORT_KEY);
-  }
-
-  clearAll() {
-    localStorage.removeItem(this.PROJECT_KEY);
-    localStorage.removeItem(this.EXPORT_KEY);
-  }
-
-  getStorageUsage() {
-    let total = 0;
-
-    for (let key in localStorage) {
-      if (localStorage.hasOwnProperty(key)) {
-        total += localStorage[key].length;
-      }
+    constructor() {
+        this.KEY = "facelessforge_projects";
     }
 
-    return total;
-  }
+    getProjects() {
+        return JSON.parse(localStorage.getItem(this.KEY)) || [];
+    }
+
+    saveProject(project) {
+
+        const projects = this.getProjects();
+
+        project.id = project.id || Date.now();
+
+        const index = projects.findIndex(p => p.id === project.id);
+
+        if (index >= 0)
+            projects[index] = project;
+        else
+            projects.unshift(project);
+
+        localStorage.setItem(
+            this.KEY,
+            JSON.stringify(projects)
+        );
+    }
+
+    deleteProject(id) {
+
+        const projects = this.getProjects()
+            .filter(p => p.id !== id);
+
+        localStorage.setItem(
+            this.KEY,
+            JSON.stringify(projects)
+        );
+    }
+
+    loadProject(id) {
+
+        return this.getProjects()
+            .find(p => p.id === id);
+
+    }
+
 }
 
 export class Utils {
