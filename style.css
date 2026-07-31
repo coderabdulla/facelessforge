@@ -32,6 +32,32 @@
 
 /* RESET */
 
+.render-progress{
+
+height:8px;
+
+background:#222;
+
+border-radius:20px;
+
+overflow:hidden;
+
+margin-top:15px;
+
+}
+
+#render-progress{
+
+height:100%;
+
+width:0;
+
+background:#6c63ff;
+
+transition:.3s;
+
+}
+
 .settings-panel{
 
 background:#1d1d1d;
