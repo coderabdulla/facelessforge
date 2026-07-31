@@ -1,3 +1,4 @@
+"use strict";
 async generateScript({ niche, durationSec, customPrompt }) {
 
     const prompt = `
