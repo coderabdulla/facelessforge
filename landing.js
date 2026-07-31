@@ -140,3 +140,57 @@ function initRevealAnimation() {
   items.forEach(item => observer.observe(item));
 
 }
+document.addEventListener("DOMContentLoaded", () => {
+
+  // Smooth Scroll
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener("click", e => {
+      const id = link.getAttribute("href");
+
+      if (id === "#" || id === "#creator") return;
+
+      const target = document.querySelector(id);
+
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({
+          behavior: "smooth"
+        });
+      }
+    });
+  });
+
+  // Creator Buttons
+  document.querySelectorAll(".btn-primary,.btn-secondary").forEach(btn => {
+
+    const text = btn.textContent.toLowerCase();
+
+    if (
+      text.includes("generate") ||
+      text.includes("start") ||
+      text.includes("login") ||
+      text.includes("creator")
+    ) {
+
+      btn.addEventListener("click", () => {
+        window.location.href = "creator.html";
+      });
+
+    }
+
+  });
+
+  // Navbar Shadow
+  const navbar = document.querySelector(".navbar");
+
+  window.addEventListener("scroll", () => {
+
+    if (window.scrollY > 40) {
+      navbar.classList.add("scrolled");
+    } else {
+      navbar.classList.remove("scrolled");
+    }
+
+  });
+
+});
