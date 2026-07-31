@@ -101,3 +101,38 @@ export class Utils {
   }
 
 }
+
+saveProject(project){
+
+    const projects=this.getProjects();
+
+    projects.unshift(project);
+
+    localStorage.setItem(
+        "ff_projects",
+        JSON.stringify(projects)
+    );
+
+}
+
+getProjects(){
+
+    return JSON.parse(
+        localStorage.getItem("ff_projects")
+        ||"[]"
+    );
+
+}
+
+deleteProject(index){
+
+    const projects=this.getProjects();
+
+    projects.splice(index,1);
+
+    localStorage.setItem(
+        "ff_projects",
+        JSON.stringify(projects)
+    );
+
+}
