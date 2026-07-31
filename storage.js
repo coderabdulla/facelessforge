@@ -171,3 +171,22 @@ project.settings = {
     fps: 30
 
 };
+clearOldProjects(max = 10) {
+
+    const projects =
+        this.getProjects();
+
+    if (projects.length <= max)
+        return;
+
+    projects.splice(
+        0,
+        projects.length - max
+    );
+
+    localStorage.setItem(
+        "ff_projects",
+        JSON.stringify(projects)
+    );
+
+}
