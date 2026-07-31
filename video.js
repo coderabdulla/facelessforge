@@ -385,3 +385,22 @@ percent+"%";
 }
 
 }
+cleanup() {
+
+    this.ctx.clearRect(
+        0,
+        0,
+        this.width,
+        this.height
+    );
+
+    if (this.music) {
+
+        this.music.pause();
+
+        this.music.src = "";
+
+    }
+
+}
+this.cleanup();
