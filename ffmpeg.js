@@ -1,3 +1,4 @@
+"use strict";
 const { FFmpeg } = FFmpegWASM;
 
 export class FFmpegEngine {
