@@ -418,74 +418,41 @@ preview() {
 
 async exportVideo() {
 
-    if (!this.project) return;
+    if (!this.currentProject) {
+        return;
+    }
+
+    this.showLoading?.(
+        "Rendering Video...",
+        "Please wait."
+    );
 
     try {
 
-        this.showLoading("Rendering Video...", 20);
-
         const blob =
-            await this.video.exportVideo(
-                this.project.scenes
+            await this.compositor.renderProject(
+                this.currentProject
             );
-
-        this.showLoading("Saving File...", 90);
 
         Utils.downloadFile(
             blob,
             `FacelessForge-${Date.now()}.webm`
         );
 
-        this.addDownload({
-            name: `FacelessForge-${Date.now()}.webm`,
-            date: new Date().toLocaleString()
-        });
+        this.showToast?.("Export Complete");
 
-        this.showLoading("Done",100);
+    } catch (error) {
 
-        setTimeout(()=>{
-            this.hideLoading();
-        },600);
+        console.error(error);
 
-    } catch(err){
+        this.showToast?.("Export Failed");
 
-        console.error(err);
+    } finally {
 
-        this.hideLoading();
-
-        alert("Video export failed.");
+        this.hideLoading?.();
 
     }
 
-    const webm =
-await this.compositor.exportVideo(
-this.currentProject.scenes
-);
-
-this.showLoading(
-"Converting",
-"Creating MP4..."
-);
-
-const mp4 =
-await this.ffmpeg.convert(webm);
-
-this.hideLoading();
-
-const url =
-URL.createObjectURL(mp4);
-
-const a =
-document.createElement("a");
-
-a.href=url;
-
-a.download=
-`FacelessForge-${Date.now()}.mp4`;
-
-a.click();
-
-URL.revokeObjectURL(url);
 }
 
 /* ========================= */
