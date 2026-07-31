@@ -35,3 +35,13 @@ export default async function handler(req, res) {
 
     res.status(200).json(data);
 }
+if (!prompt || prompt.length > 1000) {
+
+    return res.status(400).json({
+
+        error:
+        "Invalid prompt."
+
+    });
+
+}
