@@ -876,10 +876,37 @@ document.getElementById(
 "btn-play-preview"
 ).disabled=false;
 
-document.getElementById(
-"btn-export-video"
-).disabled=false;
+document
+.getElementById("btn-export-video")
+?.addEventListener("click", async () => {
 
+    if (!this.currentProject) return;
+
+    const blob =
+        await this.compositor.exportVideo(
+            this.currentProject.scenes
+        );
+
+    const url =
+        URL.createObjectURL(blob);
+
+    const a =
+        document.createElement("a");
+
+    a.href = url;
+
+    a.download =
+        `FacelessForge-${Date.now()}.webm`;
+
+    a.click();
+
+    URL.revokeObjectURL(url);
+
+    this.showToast(
+        "Video Export Complete"
+    );
+
+});
 this.hideLoading();
 
 this.showToast(
