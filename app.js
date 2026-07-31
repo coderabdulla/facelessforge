@@ -1007,6 +1007,56 @@ document
     );
 
 });
+renderProjects(){
+
+const list=
+document.getElementById("project-list");
+
+if(!list) return;
+
+list.innerHTML="";
+
+const projects=
+this.storage.getProjects();
+
+projects.forEach((project,index)=>{
+
+const item=
+document.createElement("div");
+
+item.className="project-item";
+
+item.innerHTML=`
+
+<h4>${project.title}</h4>
+
+<p>${project.createdAt}</p>
+
+<button data-index="${index}">
+Open
+</button>
+
+`;
+
+list.appendChild(item);
+
+});
+
+}
+document
+.getElementById("btn-save-project")
+?.addEventListener("click",()=>{
+
+if(!this.currentProject) return;
+
+this.storage.saveProject(
+this.currentProject
+);
+
+this.renderProjects();
+
+});
+this.renderProjects();
 
 
 /* ========================= */
