@@ -1168,7 +1168,24 @@ if (musicSelect && volume) {
     });
 
 }
+const effect =
+document.getElementById(
+"camera-effect"
+);
 
+if(effect){
+
+effect.addEventListener("change",()=>{
+
+this.compositor.setCameraEffect(
+
+effect.value
+
+);
+
+});
+
+    }
 /* ========================= */
 /* End Class */
 /* ========================= */
