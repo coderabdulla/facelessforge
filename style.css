@@ -32,6 +32,25 @@
 
 /* RESET */
 
+.nav-btn.active{
+background:#6d5dfc;
+color:#fff;
+border-radius:12px;
+}
+
+.nav-btn{
+transition:.25s;
+}
+
+.nav-btn:hover{
+background:rgba(255,255,255,.08);
+}
+
+#sidebar.open{
+left:0;
+box-shadow:0 0 40px rgba(0,0,0,.4);
+}
+
 .page-view{
 display:block;
 }
