@@ -213,3 +213,40 @@ export class Security {
     }
 
 }
+export async function safeFetch(url, options = {}) {
+
+    const controller =
+        new AbortController();
+
+    const timeout =
+        setTimeout(
+            () => controller.abort(),
+            30000
+        );
+
+    try {
+
+        const response =
+            await fetch(url, {
+                ...options,
+                signal:
+                    controller.signal
+            });
+
+        clearTimeout(timeout);
+
+        if (!response.ok) {
+            throw new Error(
+                `HTTP ${response.status}`
+            );
+        }
+
+        return response;
+
+    } finally {
+
+        clearTimeout(timeout);
+
+    }
+
+}
