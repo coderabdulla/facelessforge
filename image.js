@@ -171,12 +171,42 @@ export class ImageEngine {
 
     async generateImage(prompt) {
 
-        // API integration point
-        // Gemini / OpenAI / HuggingFace এখানে যুক্ত হবে
+    const API_KEY = "YOUR_GEMINI_API_KEY";
 
-        console.log("Generating image:", prompt);
+    try {
+
+        const response = await fetch(
+            `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image:generateContent?key=${API_KEY}`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    contents: [{
+                        parts: [{
+                            text: prompt
+                        }]
+                    }]
+                })
+            }
+        );
+
+        if (!response.ok)
+            throw new Error("Image generation failed");
+
+        // পরে API response অনুযায়ী image URL/base64 extract করতে হবে
 
         return this.placeholder;
+
+    } catch (err) {
+
+        console.error(err);
+
+        return this.placeholder;
+
+    }
+
     }
 
     loadImage(src) {
