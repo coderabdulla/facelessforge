@@ -31,6 +31,47 @@
 }
 
 /* RESET */
+
+.template-grid{
+
+display:grid;
+
+grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+
+gap:15px;
+
+margin-top:20px;
+
+}
+
+.template-card{
+
+padding:18px;
+
+border:none;
+
+border-radius:15px;
+
+cursor:pointer;
+
+background:#1d1d1d;
+
+color:white;
+
+font-size:16px;
+
+transition:.3s;
+
+}
+
+.template-card:hover{
+
+transform:translateY(-5px);
+
+background:#6c63ff;
+
+}
+
 .dashboard-panel{
 
 padding:20px;
