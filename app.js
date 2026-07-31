@@ -100,6 +100,71 @@ class FacelessForgeApp {
 
             });
 
+        this.initNavigation();
+        initNavigation() {
+
+    this.sidebar =
+        document.getElementById("sidebar");
+
+    this.mobileBtn =
+        document.getElementById("mobile-menu-btn");
+
+    this.navButtons =
+        document.querySelectorAll(".nav-btn");
+
+    this.pages =
+        document.querySelectorAll(".page-view");
+
+    // Sidebar Toggle
+    this.mobileBtn?.addEventListener("click", () => {
+
+        this.sidebar.classList.toggle("open");
+
+    });
+
+    // Navigation
+    this.navButtons.forEach(btn => {
+
+        btn.addEventListener("click", () => {
+
+            const page = btn.dataset.page;
+
+            this.switchPage(page);
+
+        });
+
+    });
+
+        }
+        switchPage(page) {
+
+    this.pages.forEach(view => {
+
+        view.classList.add("hidden");
+
+    });
+
+    const target =
+        document.getElementById(
+            `page-${page}`
+        );
+
+    if (target)
+        target.classList.remove("hidden");
+
+    this.navButtons.forEach(btn => {
+
+        btn.classList.remove("active");
+
+        if (btn.dataset.page === page)
+            btn.classList.add("active");
+
+    });
+
+    if (window.innerWidth < 900)
+        this.sidebar.classList.remove("open");
+
+        }
     }
 
     renderWelcome() {
