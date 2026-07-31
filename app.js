@@ -698,6 +698,59 @@ this.showToast("Project Deleted");
 }
 
 });
+async startPipeline(){
+
+this.showLoading(
+"Generating AI Video",
+"Preparing pipeline..."
+);
+
+const steps=[
+"Writing Script",
+"Generating Images",
+"Creating Voice",
+"Rendering Preview"
+];
+
+const ui=document.querySelectorAll(".pipeline-step");
+
+for(let i=0;i<steps.length;i++){
+
+document.getElementById(
+"loading-text"
+).textContent=steps[i];
+
+ui.forEach(s=>s.classList.remove("active"));
+
+ui[i].classList.add("active");
+
+await new Promise(resolve=>
+setTimeout(resolve,1500)
+);
+
+}
+
+this.hideLoading();
+
+this.showToast(
+"Pipeline Complete"
+);
+
+}
+document
+.getElementById("btn-generate-pipeline")
+?.addEventListener("click",()=>{
+
+this.startPipeline();
+
+});
+document
+.getElementById("btn-play-preview")
+.disabled=false;
+
+document
+.getElementById("btn-export-video")
+.disabled=false;
 /* ========================= */
 /* End Class */
 /* ========================= */
