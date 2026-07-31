@@ -81,6 +81,15 @@ export class Utils {
     return (bytes / (1024 * 1024)).toFixed(2) + " MB";
 
   }
+    try{
+
+localStorage.setItem(...);
+
+}catch(e){
+
+console.error(e);
+
+}
 
   static randomSeed() {
     return Math.floor(
