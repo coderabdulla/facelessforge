@@ -32,8 +32,7 @@
 
 /* RESET */
 
-*{
-   html{
+ html{
 scroll-behavior:smooth;
 }
 
@@ -54,6 +53,15 @@ cursor:pointer;
 transition:.3s;
 }
 
+.navbar.scrolled{
+backdrop-filter: blur(20px);
+background: rgba(10,10,25,.92);
+box-shadow:0 10px 35px rgba(0,0,0,.35);
+transition:.3s;
+}
+
+
+*{
 margin:0;
 padding:0;
 box-sizing:border-box;
