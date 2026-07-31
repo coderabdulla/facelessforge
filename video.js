@@ -1,113 +1,131 @@
 export class VideoCompositor {
-  constructor() {
-    this.canvas = document.getElementById("video-canvas");
-    this.ctx = this.canvas.getContext("2d");
-    this.subtitle = document.getElementById("subtitle-text");
-  }
 
-  renderFrame(image, progress = 0, effect = "kenburns-zoom") {
-    if (!image) return;
+    constructor() {
 
-    const ctx = this.ctx;
-    const canvas = this.canvas;
+        this.canvas = document.getElementById("video-canvas");
+        this.ctx = this.canvas.getContext("2d");
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+        this.width = this.canvas.width;
+        this.height = this.canvas.height;
 
-    let scale = 1;
-
-    if (effect === "kenburns-zoom") {
-      scale = 1 + progress * 0.15;
+        this.isPlaying = false;
     }
 
-    if (effect === "kenburns-out") {
-      scale = 1.15 - progress * 0.15;
-    }
+    renderFrame(image, progress = 0, subtitle = "") {
 
-    const w = canvas.width * scale;
-    const h = canvas.height * scale;
+        const ctx = this.ctx;
 
-    ctx.drawImage(
-      image,
-      (canvas.width - w) / 2,
-      (canvas.height - h) / 2,
-      w,
-      h
-    );
-  }
+        ctx.clearRect(0, 0, this.width, this.height);
 
-  async playPreview(scenes) {
-    if (!scenes || scenes.length === 0) return;
+        // Ken Burns Zoom
+        const scale = 1 + (progress * 0.15);
 
-    for (const scene of scenes) {
+        const drawWidth = this.width * scale;
+        const drawHeight = this.height * scale;
 
-      this.subtitle.textContent = scene.narration;
+        const x = (this.width - drawWidth) / 2;
+        const y = (this.height - drawHeight) / 2;
 
-      const duration = (scene.duration || 5) * 1000;
+        if (image) {
+            ctx.drawImage(
+                image,
+                x,
+                y,
+                drawWidth,
+                drawHeight
+            );
+        }
 
-      const start = performance.now();
+        // Dark Overlay
+        ctx.fillStyle = "rgba(0,0,0,.25)";
+        ctx.fillRect(0, 0, this.width, this.height);
 
-      await new Promise(resolve => {
-
-        const animate = (time) => {
-
-          const progress = Math.min(
-            (time - start) / duration,
-            1
-          );
-
-          this.renderFrame(
-            scene.imageElement,
-            progress,
-            "kenburns-zoom"
-          );
-
-          if (progress < 1) {
-            requestAnimationFrame(animate);
-          } else {
-            resolve();
-          }
-
-        };
-
-        requestAnimationFrame(animate);
-
-      });
+        // Subtitle
+        this.drawSubtitle(subtitle);
 
     }
-  }
 
-  async exportVideo(scenes) {
+    drawSubtitle(text = "") {
 
-    const stream = this.canvas.captureStream(30);
+        if (!text) return;
 
-    const recorder = new MediaRecorder(stream, {
-      mimeType: "video/webm"
-    });
+        const ctx = this.ctx;
 
-    const chunks = [];
+        ctx.font = "bold 64px Inter";
 
-    recorder.ondataavailable = e => {
-      if (e.data.size > 0) {
-        chunks.push(e.data);
-      }
-    };
+        ctx.textAlign = "center";
 
-    const finished = new Promise(resolve => {
-      recorder.onstop = () => {
-        resolve(
-          new Blob(chunks, {
-            type: "video/webm"
-          })
+        ctx.fillStyle = "#ffffff";
+
+        ctx.strokeStyle = "#000000";
+
+        ctx.lineWidth = 8;
+
+        const y = this.height - 180;
+
+        ctx.strokeText(
+            text,
+            this.width / 2,
+            y
         );
-      };
-    });
 
-    recorder.start();
+        ctx.fillText(
+            text,
+            this.width / 2,
+            y
+        );
 
-    await this.playPreview(scenes);
+    }
 
-    recorder.stop();
+    async playPreview(scenes) {
 
-    return finished;
-  }
+        if (!scenes || !scenes.length)
+            return;
+
+        this.isPlaying = true;
+
+        for (const scene of scenes) {
+
+            const start = performance.now();
+
+            while (
+                performance.now() - start < 3000 &&
+                this.isPlaying
+            ) {
+
+                const progress =
+                    (performance.now() - start) / 3000;
+
+                this.renderFrame(
+                    scene.imageElement,
+                    progress,
+                    scene.text
+                );
+
+                await new Promise(r =>
+                    requestAnimationFrame(r)
+                );
+
+            }
+
+        }
+
+    }
+
+    stopPreview() {
+
+        this.isPlaying = false;
+
+    }
+
+    async exportVideo() {
+
+        alert(
+            "MP4/WebM export will be enabled in Phase 3."
+        );
+
+        return null;
+
+    }
+
 }
