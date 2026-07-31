@@ -87,3 +87,8 @@ export class VoiceEngine {
     }
 
 }
+setRate(rate){
+
+this.rate = rate;
+
+}
