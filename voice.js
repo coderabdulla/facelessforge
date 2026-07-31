@@ -1,88 +1,35 @@
 export class VoiceEngine {
 
     constructor() {
-        this.synth = window.speechSynthesis;
-        this.voice = null;
         this.rate = 1;
-        this.pitch = 1;
-
-        this.loadVoices();
-    }
-
-    loadVoices() {
-
-        const load = () => {
-
-            const voices = this.synth.getVoices();
-
-            this.voice =
-                voices.find(v => v.lang.startsWith("en"))
-                || voices[0]
-                || null;
-
-        };
-
-        load();
-
-        speechSynthesis.onvoiceschanged = load;
-
     }
 
     setRate(rate) {
         this.rate = rate;
     }
 
-    setPitch(pitch) {
-        this.pitch = pitch;
-    }
+    async generateVoice(text) {
 
-    async speak(text) {
+        const response = await fetch("/api/generate-voice", {
 
-        return new Promise(resolve => {
+            method: "POST",
 
-            const utter =
-                new SpeechSynthesisUtterance(text);
+            headers: {
+                "Content-Type": "application/json"
+            },
 
-            utter.voice = this.voice;
-            utter.rate = this.rate;
-            utter.pitch = this.pitch;
-
-            utter.onend = resolve;
-
-            this.synth.cancel();
-            this.synth.speak(utter);
+            body: JSON.stringify({
+                text,
+                rate: this.rate
+            })
 
         });
 
-    }
+        if (!response.ok) {
+            throw new Error("Voice generation failed.");
+        }
 
-    async generateNarration(scenes) {
-
-        return scenes.map(scene => ({
-
-            id: scene.id,
-
-            text: scene.text,
-
-            duration:
-                Math.max(
-                    3,
-                    Math.ceil(scene.text.split(" ").length / 2.5)
-                ),
-
-            audioUrl: null
-
-        }));
-
-    }
-
-    async generateWithElevenLabs(text) {
-
-        // Backend API call এখানে হবে
-
-        throw new Error(
-            "ElevenLabs backend not connected yet."
-        );
+        return await response.blob();
 
     }
 
