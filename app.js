@@ -9,6 +9,7 @@ import { ImageEngine } from "./image.js";
 import { VoiceEngine } from "./voice.js";
 import { VideoCompositor } from "./video.js";
 import { StorageManager } from "./storage.js";
+import { FFmpegEngine } from "./ffmpeg.js";
 
 class FacelessForgeApp {
 
@@ -23,6 +24,8 @@ class FacelessForgeApp {
     this.compositor=new VideoCompositor();
 
     this.storage=new StorageManager();
+        this.ffmpeg =
+new FFmpegEngine();
 
     this.currentProject=null;
 
@@ -454,6 +457,35 @@ async exportVideo() {
 
     }
 
+    const webm =
+await this.compositor.exportVideo(
+this.currentProject.scenes
+);
+
+this.showLoading(
+"Converting",
+"Creating MP4..."
+);
+
+const mp4 =
+await this.ffmpeg.convert(webm);
+
+this.hideLoading();
+
+const url =
+URL.createObjectURL(mp4);
+
+const a =
+document.createElement("a");
+
+a.href=url;
+
+a.download=
+`FacelessForge-${Date.now()}.mp4`;
+
+a.click();
+
+URL.revokeObjectURL(url);
 }
 
 /* ========================= */
