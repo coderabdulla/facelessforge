@@ -565,7 +565,43 @@
     </div>
 
 </div>
+<div class="settings-panel">
 
+    <h3>Export Settings</h3>
+
+    <label>Resolution</label>
+
+    <select id="export-resolution">
+        <option value="720">720 × 1280</option>
+        <option value="1080" selected>1080 × 1920</option>
+    </select>
+
+    <label>FPS</label>
+
+    <select id="export-fps">
+        <option value="24">24 FPS</option>
+        <option value="30" selected>30 FPS</option>
+        <option value="60">60 FPS</option>
+    </select>
+
+    <label>Voice Speed</label>
+
+    <input
+        id="voice-speed"
+        type="range"
+        min="0.5"
+        max="2"
+        step="0.1"
+        value="1">
+
+    <label>Theme</label>
+
+    <select id="theme-select">
+        <option value="dark">Dark</option>
+        <option value="light">Light</option>
+    </select>
+
+</div>
         </section>
         <!-- ========================= -->
 <!-- PROJECTS -->
