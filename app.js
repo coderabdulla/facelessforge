@@ -1278,6 +1278,29 @@ script.scenes
 );
 
 this.currentProject.voice = voiceBlob;
+window.addEventListener("error",(event)=>{
+
+console.error(event.error);
+
+window.facelessForgeApp
+?.showToast(
+"Unexpected Error",
+"error"
+);
+
+});
+
+window.addEventListener("unhandledrejection",(event)=>{
+
+console.error(event.reason);
+
+window.facelessForgeApp
+?.showToast(
+"Request Failed",
+"error"
+);
+
+});
 /* ========================= */
 /* End Class */
 /* ========================= */
