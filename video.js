@@ -12,6 +12,11 @@ export class VideoCompositor {
         this.mediaRecorder = null;
 this.recordedChunks = [];
 this.stream = this.canvas.captureStream(30);
+        this.music = new Audio();
+
+this.music.loop = true;
+
+this.music.volume = 0.4;
 
     };
 
@@ -185,6 +190,13 @@ this.renderFrame(
         }
 
     }
+if (this.music.src) {
+
+    this.music.currentTime = 0;
+
+    this.music.play();
+
+}
 
     stopPreview() {
 
@@ -221,5 +233,20 @@ buildSubtitle(scene, progress) {
         currentWord
 
     };
+
+}
+setMusic(src, volume = 0.4) {
+
+    if (!src) {
+
+        this.music.pause();
+
+        return;
+
+    }
+
+    this.music.src = src;
+
+    this.music.volume = volume;
 
 }
