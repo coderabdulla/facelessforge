@@ -1186,6 +1186,63 @@ effect.value
 });
 
     }
+const resolution =
+document.getElementById("export-resolution");
+
+const fps =
+document.getElementById("export-fps");
+
+const speed =
+document.getElementById("voice-speed");
+
+const theme =
+document.getElementById("theme-select");
+
+resolution?.addEventListener("change",()=>{
+
+const size =
+resolution.value==="720"
+
+?720
+
+:1080;
+
+this.compositor.setExportSettings(
+
+size,
+
+size===720?1280:1920,
+
+Number(fps.value)
+
+);
+
+});
+
+fps?.addEventListener("change",()=>{
+
+this.compositor.fps=
+Number(fps.value);
+
+});
+
+speed?.addEventListener("input",()=>{
+
+this.voiceEngine.setRate(
+
+Number(speed.value)
+
+);
+
+});
+
+theme?.addEventListener("change",()=>{
+
+document.documentElement.dataset.theme=
+
+theme.value;
+
+});
 /* ========================= */
 /* End Class */
 /* ========================= */
