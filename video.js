@@ -2,6 +2,7 @@ export class VideoCompositor {
 
     constructor() {
 
+        this.cameraEffect = "kenburns";
         this.canvas = document.getElementById("video-canvas");
         this.ctx = this.canvas.getContext("2d");
 
@@ -84,15 +85,81 @@ this.renderFrame(
     progress,
     subtitle
 );
-        const scale = 1 + (progress * 0.15);
+        let scale = 1;
+
+let offsetX = 0;
+
+let offsetY = 0;
+
+switch(this.cameraEffect){
+
+case "zoomin":
+
+scale = 1 + progress * 0.30;
+
+break;
+
+case "zoomout":
+
+scale = 1.30 - progress * 0.30;
+
+break;
+
+case "panleft":
+
+offsetX = -progress * 120;
+
+break;
+
+case "panright":
+
+offsetX = progress * 120;
+
+break;
+
+case "shake":
+
+offsetX = Math.random()*12-6;
+
+offsetY = Math.random()*12-6;
+
+break;
+
+default:
+
+scale = 1 + progress * 0.15;
+
+}
 
         const drawWidth = this.width * scale;
         const drawHeight = this.height * scale;
 
-        const x = (this.width - drawWidth) / 2;
-        const y = (this.height - drawHeight) / 2;
+        const x =
+(this.width-drawWidth)/2
++offsetX;
+
+const y =
+(this.height-drawHeight)/2
++offsetY;
 
         if (image) {
+            if(this.cameraEffect==="fade"){
+
+ctx.globalAlpha =
+0.5 + progress*0.5;
+
+}else{
+
+ctx.globalAlpha = 1;
+
+            }
+            ctx.filter =
+
+this.cameraEffect==="blur"
+
+?`blur(${3-progress*3}px)`
+
+:"none";
             ctx.drawImage(
                 image,
                 x,
@@ -248,5 +315,10 @@ setMusic(src, volume = 0.4) {
     this.music.src = src;
 
     this.music.volume = volume;
+
+}
+setCameraEffect(effect){
+
+    this.cameraEffect = effect;
 
 }
