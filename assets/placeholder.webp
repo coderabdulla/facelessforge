@@ -1,1 +1,5 @@
+async generateImage(prompt) {
 
+    // এখানে API call হবে
+
+}
