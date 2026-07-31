@@ -69,6 +69,16 @@ stopRecording() {
         ctx.clearRect(0, 0, this.width, this.height);
 
         // Ken Burns Zoom
+        const subtitle = this.buildSubtitle(
+    scene,
+    progress
+);
+
+this.renderFrame(
+    scene.imageElement,
+    progress,
+    subtitle
+);
         const scale = 1 + (progress * 0.15);
 
         const drawWidth = this.width * scale;
@@ -96,37 +106,50 @@ stopRecording() {
 
     }
 
-    drawSubtitle(text = "") {
+    drawSubtitle(subtitle = {}) {
 
-        if (!text) return;
+    if (!subtitle.text) return;
 
-        const ctx = this.ctx;
+    const ctx = this.ctx;
 
-        ctx.font = "bold 64px Inter";
+    const text = subtitle.text;
 
-        ctx.textAlign = "center";
+    const currentWord = subtitle.currentWord || -1;
 
-        ctx.fillStyle = "#ffffff";
+    const words = text.split(" ");
 
-        ctx.strokeStyle = "#000000";
+    ctx.textAlign = "center";
+    ctx.font = "bold 64px Inter";
 
+    let totalWidth = 0;
+
+    words.forEach(word => {
+        totalWidth += ctx.measureText(word + " ").width;
+    });
+
+    let x = (this.width - totalWidth) / 2;
+    const y = this.height - 180;
+
+    words.forEach((word, index) => {
+
+        const width = ctx.measureText(word + " ").width;
+
+        ctx.fillStyle =
+            index === currentWord
+                ? "#FFD400"
+                : "#FFFFFF";
+
+        ctx.strokeStyle = "#000";
         ctx.lineWidth = 8;
 
-        const y = this.height - 180;
+        ctx.strokeText(word, x + width / 2, y);
+        ctx.fillText(word, x + width / 2, y);
 
-        ctx.strokeText(
-            text,
-            this.width / 2,
-            y
-        );
+        x += width;
 
-        ctx.fillText(
-            text,
-            this.width / 2,
-            y
-        );
+    });
 
-    }
+}
 
     async playPreview(scenes) {
 
@@ -180,5 +203,23 @@ stopRecording() {
     return blob;
 
     }
+
+}
+buildSubtitle(scene, progress) {
+
+    const words = scene.text.split(" ");
+
+    const currentWord = Math.min(
+        words.length - 1,
+        Math.floor(progress * words.length)
+    );
+
+    return {
+
+        text: scene.text,
+
+        currentWord
+
+    };
 
 }
