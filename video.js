@@ -8,6 +8,9 @@ export class VideoCompositor {
 
         this.width = this.canvas.width;
         this.height = this.canvas.height;
+        this.exportWidth = 1080;
+this.exportHeight = 1920;
+this.fps = 30;
 
         this.isPlaying = false;
         this.mediaRecorder = null;
@@ -320,5 +323,22 @@ setMusic(src, volume = 0.4) {
 setCameraEffect(effect){
 
     this.cameraEffect = effect;
+
+}
+setExportSettings(width,height,fps){
+
+this.exportWidth = width;
+
+this.exportHeight = height;
+
+this.fps = fps;
+
+this.canvas.width = width;
+
+this.canvas.height = height;
+
+this.width = width;
+
+this.height = height;
 
 }
