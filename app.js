@@ -1243,6 +1243,15 @@ document.documentElement.dataset.theme=
 theme.value;
 
 });
+const settings =
+this.storage.getSettings();
+
+if(settings.theme){
+
+document.documentElement.dataset.theme =
+settings.theme;
+
+}
 /* ========================= */
 /* End Class */
 /* ========================= */
